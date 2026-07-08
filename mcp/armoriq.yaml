@@ -1,17 +1,37 @@
 version: v1
+
 identity:
   api_key: ak_live_d8c1c15fdd8fceeb320df2f486d6781964149ac3607c47a59495cce0a4bffeeb
   user_id: default
-  agent_id: my-agent
+  agent_id: sales-agent
+
 environment: sandbox
+
 proxy:
   url: https://proxy.armoriq.ai
   timeout: 30
   max_retries: 3
-mcp_servers: []
+
+
+mcp_servers:
+
+  - id: sales-mcp
+    url: https://armoriq-challenges.onrender.com/mcp
+    description: Sales analysis MCP challenge server
+    auth:
+      type: none
+
+
 policy:
-  allow: []
+
+  allow:
+    - sales-mcp.fetch_sales
+    - sales-mcp.analyze_sales
+
   deny: []
+
+
 intent:
+
   ttl_seconds: 300
   require_csrg: true
