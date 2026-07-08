@@ -1,0 +1,17 @@
+version: v1
+identity:
+  api_key: ak_live_d8c1c15fdd8fceeb320df2f486d6781964149ac3607c47a59495cce0a4bffeeb
+  user_id: default
+  agent_id: my-agent
+environment: sandbox
+proxy:
+  url: https://proxy.armoriq.ai
+  timeout: 30
+  max_retries: 3
+mcp_servers: []
+policy:
+  allow: []
+  deny: []
+intent:
+  ttl_seconds: 300
+  require_csrg: true
