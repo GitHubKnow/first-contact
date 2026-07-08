@@ -1,22 +1,32 @@
-from fetch_sales import fetch_sales
+from .fetch_sales import fetch_sales
 
 
 def analyze_sales():
-    """
-    Analyzes the sales data returned by fetch_sales().
-    """
 
     data = fetch_sales()
 
     sales = data["sales"]
 
-    total = sum(item["revenue"] for item in sales)
+    revenues = [
+        item["revenue"]
+        for item in sales
+    ]
 
-    average = total / len(sales)
+    total = sum(revenues)
 
-    best = max(sales, key=lambda x: x["revenue"])
+    average = total / len(revenues)
 
-    worst = min(sales, key=lambda x: x["revenue"])
+
+    best = max(
+        sales,
+        key=lambda x: x["revenue"]
+    )
+
+    lowest = min(
+        sales,
+        key=lambda x: x["revenue"]
+    )
+
 
     return {
         "success": True,
@@ -25,8 +35,8 @@ def analyze_sales():
             "average_revenue": average,
             "best_month": best["month"],
             "best_revenue": best["revenue"],
-            "lowest_month": worst["month"],
-            "lowest_revenue": worst["revenue"],
+            "lowest_month": lowest["month"],
+            "lowest_revenue": lowest["revenue"],
             "months_analyzed": len(sales)
         }
     }
