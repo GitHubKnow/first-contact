@@ -1,19 +1,16 @@
 from armoriq_sdk import ArmorIQClient
 
 
-class RuleBasedAgent:
+class ArmorAgent:
 
     def __init__(self):
+
         self.client = ArmorIQClient()
 
 
-    # -------------------------
-    # Rule based planner
-    # -------------------------
+    def build_plan(self, action):
 
-    def create_plan(self, prompt):
-
-        if prompt == "show_sales":
+        if action == "show_sales":
 
             return {
                 "steps": [
@@ -26,7 +23,7 @@ class RuleBasedAgent:
             }
 
 
-        elif prompt == "analyze_sales":
+        elif action == "analyze_sales":
 
             return {
                 "steps": [
@@ -40,23 +37,29 @@ class RuleBasedAgent:
 
 
         else:
-            raise Exception("Unknown command")
+
+            raise ValueError(
+                "Unknown action"
+            )
 
 
-    # -------------------------
-    # Execute through ArmorIQ
-    # -------------------------
+    def execute(self, action):
 
-    def execute(self, prompt):
+        prompt = action
 
-        plan = self.create_plan(prompt)
+
+        # 1. Build execution plan
+
+        plan = self.build_plan(action)
 
 
         print("\nPLAN:")
         print(plan)
 
 
-        # Capture execution plan
+
+        # 2. Capture plan with ArmorIQ
+
         plan_capture = self.client.capture_plan(
             llm="rule-based-planner",
             prompt=prompt,
@@ -69,22 +72,24 @@ class RuleBasedAgent:
 
 
 
-        # Generate intent token
+        # 3. Generate intent token
+
         intent_token = self.client.get_intent_token(
             plan_capture
         )
 
 
-        print("\nINTENT TOKEN GENERATED")
+        print("\nINTENT TOKEN:")
+        print(intent_token.token_id)
 
 
 
-        # Get first step
+        # 4. Execute through ArmorIQ MCP proxy
+
         step = plan["steps"][0]
 
 
-        # Execute through ArmorIQ MCP proxy
-        result = self.client.invoke(
+        response = self.client.invoke(
             mcp=step["mcp"],
             action=step["action"],
             intent_token=intent_token,
@@ -92,4 +97,23 @@ class RuleBasedAgent:
         )
 
 
-        return result
+        print("\nFINAL RESPONSE:")
+        print(response)
+
+
+
+        return response.result
+
+
+
+# local testing only
+
+if __name__ == "__main__":
+
+    agent = ArmorAgent()
+
+    result = agent.execute(
+        "show_sales"
+    )
+
+    print(result)
