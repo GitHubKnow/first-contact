@@ -4,3 +4,4 @@ uvicorn
 httpx
 python-dotenv
 gunicorn
+armoriq-sdk==0.6.0
