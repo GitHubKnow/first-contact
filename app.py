@@ -11,13 +11,13 @@ app = FastAPI(
 
 # Sales MCP
 app.include_router(
-    sales_router,
+    router,
     prefix="/sales"
 )
 
 # Data MCP
 app.include_router(
-    data_router,
+    router,
     prefix="/data"
 )
 
