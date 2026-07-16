@@ -3,8 +3,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 import json
 
 from agent.agent import ArmorAgent
-from sales_mcp.server import router as sales_router
-from data_mcp.server import router as data_router
+from mcp.server import router
 
 app = FastAPI(
     title="ArmorIQ Sales Challenge"
