@@ -3,15 +3,24 @@ from fastapi.responses import HTMLResponse, JSONResponse
 import json
 
 from agent.agent import ArmorAgent
-from mcp.server import router
-
+from sales_mcp.server import router as sales_router
+from data_mcp.server import router as data_router
 
 app = FastAPI(
     title="ArmorIQ Sales Challenge"
 )
 
-# Register the MCP endpoint (/mcp)
-app.include_router(router)
+# Sales MCP
+app.include_router(
+    sales_router,
+    prefix="/sales"
+)
+
+# Data MCP
+app.include_router(
+    data_router,
+    prefix="/data"
+)
 
 agent = ArmorAgent()
 
@@ -112,8 +121,9 @@ def home():
 def execute(action: str):
 
     allowed_actions = [
-        "show_sales",
-        "analyze_sales"
+    "show_sales",
+    "analyze_sales",
+    "delete_all"
     ]
 
     if action not in allowed_actions:
