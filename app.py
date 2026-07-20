@@ -15,12 +15,6 @@ app.include_router(
     prefix="/sales"
 )
 
-# Data MCP
-app.include_router(
-    router,
-    prefix="/data"
-)
-
 agent = ArmorAgent()
 
 
